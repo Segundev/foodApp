@@ -34,13 +34,15 @@
   }
 
   let rect;
-  let width = 900;
-  let height = 540;
+  let width = 540;
+  let height = 340;
 
   onMount(resize);
 
   function resize() {
     ({ width, height } = rect.getBoundingClientRect());
+    console.log(width);
+    console.log(height);
   }
 </script>
 
