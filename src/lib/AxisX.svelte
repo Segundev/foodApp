@@ -4,6 +4,7 @@
   export let margin;
   export let xScale;
   export let height;
+  export let width;
 
   import { timeParse } from "d3-time-format";
   let parseTime = timeParse("%b-%y");
@@ -12,14 +13,21 @@
   $: console.log(xTicks);
 </script>
 
+<line
+  x2={width}
+  y1={height - 30}
+  y2={height - 30}
+  stroke="#ddd"
+  stroke-width="1"
+/>
 <g class="text" transform="translate({margin.left},{height})">
   {#each xTicks as year}
-    <text x={xScale(parseTime(year))} y={-20}> {year} </text>
+    <text x={xScale(parseTime(year))} y={-5}> {year} </text>
   {/each}
 </g>
 
 <style>
   text {
-    font-size: 10px;
+    font-size: 14px;
   }
 </style>

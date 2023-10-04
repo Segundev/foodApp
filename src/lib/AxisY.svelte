@@ -23,6 +23,6 @@
 
 <style>
   text {
-    font-size: 10px;
+    font-size: 14px;
   }
 </style>

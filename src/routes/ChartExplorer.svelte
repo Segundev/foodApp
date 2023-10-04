@@ -1,31 +1,28 @@
 <script>
   // @ts-nocheck
   import { onMount } from "svelte";
-
-  import LineChart from "../lib/LineChart.svelte";
-  import data from "../lib/data.json";
+  import Grid from "../lib/Grid.svelte";
+  import LineChart from "$lib/LineChart.svelte";
+  import data from "$lib/data.json";
 
   // import d3 dependencies
-  import { scaleLinear, scaleOrdinal } from "d3-scale"; // to scale data into dimensions
-  import { min, max, extent, groups } from "d3-array"; // for data manipulation
-  import { timeParse } from "d3-time-format"; // d3 timeparse fo convert
-  import { curveCatmullRom, line } from "d3-shape"; /// to convert data into svg path
-
-  // create margins, chart boundaries and dimensions
-  let margin = { top: 25, right: 25, bottom: 25, left: 25 };
-  let height = 400;
-  let width = 400;
-
-  // inner chart boundaries - innerWidth is a reactive variable to screen width responsiveness
-  let innerHeight = height - margin.top - margin.bottom;
-  $: innerWidth = width - margin.left - margin.right;
+  import { groups } from "d3-array"; // for data manipulation
 
   // @ts-ignore - List of selected food items
   let selected = ["icedSardine"];
   const foodItems = [...new Set(data.map((d) => d.foodItem))];
 
+  // @ts-ignore - Data is updated and selected based on fooditems selected from list of checkbox items
+  $: updatedData = selected
+    .map((s) => data.filter((d) => s === d.foodItem))
+    .flat();
+
+  // data is nested(grouped) into an array of key(foodIems) and value(all data particular to the fooditem)
+  $: sumstat = groups([...updatedData], (d) => d.foodItem);
+
   let closeDropdown;
   let active = false;
+  let grid = true;
 
   function toggleDropdown() {
     active = !active;
@@ -36,41 +33,27 @@
     }
   }
 
-  // @ts-ignore - Data is updated and selected based on fooditems selected from list of checkbox items
-  $: updatedData = selected
-    .map((s) => data.filter((d) => s === d.foodItem))
-    .flat();
+  let rect;
+  let width = 900;
+  let height = 540;
 
-  // data is nested(grouped) into an array of key(foodIems) and value(all data particular to the fooditem)
-  $: sumstat = groups([...updatedData], (d) => d.foodItem);
+  onMount(resize);
 
-  // set a variable that has a function value that converts string to Date
-  let parseTime = timeParse("%b-%y");
-
-  // reactive scale on the horizontal and vertical axis, Mapping date and prices variables to create scaled axis within chart boundaries
-  $: xScale = scaleLinear()
-    .domain(extent(updatedData, (d) => parseTime(d.date)))
-    .range([margin.left, innerWidth]);
-
-  $: yScale = scaleLinear()
-    .domain([0, max(updatedData, (d) => +d.prices)])
-    .range([innerHeight, margin.bottom]);
-
-  // a reactive variable that has value of d3-path to draw the lines
-  $: pathline = line()
-    .x((d) => xScale(parseTime(d.date)))
-    .y((d) => yScale(+d.prices))
-    .curve(curveCatmullRom);
+  function resize() {
+    ({ width, height } = rect.getBoundingClientRect());
+  }
 </script>
 
+<svelte:window on:resize={resize} />
 <div>
   <div class="header-wrapper">
     <header>
       <h2>Title of the Dashboard</h2>
       <p>
-        In recent years, multiple, consecutive crises, including the COVID-19
-        pandemic and Russia’s illegal war of aggression against Ukraine, have
-        threatened economic resilience and wellbeing worldwide.
+        In recent years, multiple, consecutive crises, including the
+        COVID-19 pandemic and Russia’s illegal war of aggression
+        against Ukraine, have threatened economic resilience and
+        wellbeing worldwide.
       </p>
     </header>
     <div class="select-buttons">
@@ -101,35 +84,47 @@
           </div>
         </div>
         <div class="button-grid-wrapper">
-          <div class="button-select button-food-prices">food prices</div>
+          <div class="button-select button-food-prices">
+            food prices
+          </div>
           <div class="button-select button-percentage-change">
             percentage changes
           </div>
-          <div class="chart-select">
+          <div on:click={() => (grid = !grid)} class="chart-select">
             <div class="button-select button-grid">Grid</div>
-            <div class="button-select button-linechart">Line Chart</div>
+            <div class="button-select button-linechart">
+              Line Chart
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-<div class="chart-wrapper" bind:clientWidth={width}>
-  <LineChart
-    {innerWidth}
-    {innerHeight}
-    {height}
-    {width}
-    {sumstat}
-    {pathline}
-    {yScale}
-    {xScale}
-    {margin}
-    {parseTime}
-  />
+<div>
+  <main>
+    <figure class="chart-wrapper">
+      <div bind:this={rect} class="graph-component">
+        {#if grid}
+          <LineChart
+            {updatedData}
+            {sumstat}
+            {foodItems}
+            {width}
+            {height}
+          />
+        {:else}
+          <Grid {sumstat} {updatedData} />
+        {/if}
+      </div>
+    </figure>
+  </main>
 </div>
 
 <style>
+  main {
+    min-height: 340px;
+  }
   .header-wrapper {
     background-color: #feffda;
     padding-top: 1rem;
@@ -231,6 +226,37 @@
 
   .button-linechart {
     display: none;
+  }
+
+  figure.chart-wrapper {
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    flex-direction: column;
+    margin: 0 auto;
+    padding-top: 1.2rem;
+    width: 100%;
+    max-width: 690px;
+    min-height: 340px;
+    height: calc(100vh - 240px);
+    position: relative;
+  }
+
+  .graph-component {
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+    border-bottom: none;
+    text-align: left;
+    line-height: 1em;
+    background: white;
+    color: #333;
+    position: relative;
+    container-type: size;
+    container-name: grapher;
+    border-radius: 2px;
+    box-shadow: #0000001a 0 0 2px, #00000040 0 2px 2px;
+    z-index: 1;
   }
 
   @media (width < 650px) {

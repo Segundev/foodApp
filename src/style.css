@@ -29,7 +29,7 @@ html {
 *,
 *:before,
 *:after {
-  box-sizing: inherit;
+  box-sizing: border-box;
 }
 
 body {
@@ -80,4 +80,8 @@ h5 {
 small,
 .text_small {
   font-size: var(--h6);
+}
+
+figure {
+  margin: 0;
 }
