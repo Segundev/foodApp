@@ -238,7 +238,7 @@
     margin: 0 auto;
     padding-top: 1.2rem;
     width: 100%;
-    max-width: 690px;
+    max-width: 1190px;
     min-height: 340px;
     height: calc(100vh - 240px);
     position: relative;
