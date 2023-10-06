@@ -41,8 +41,6 @@
 
   function resize() {
     ({ width, height } = rect.getBoundingClientRect());
-    console.log(width);
-    console.log(height);
   }
 </script>
 
@@ -116,7 +114,7 @@
             {height}
           />
         {:else}
-          <Grid {sumstat} {updatedData} />
+          <Grid {sumstat} {updatedData} {width} {height} />
         {/if}
       </div>
     </figure>
@@ -254,8 +252,6 @@
     background: white;
     color: #333;
     position: relative;
-    container-type: size;
-    container-name: grapher;
     border-radius: 2px;
     box-shadow: #0000001a 0 0 2px, #00000040 0 2px 2px;
     z-index: 1;

@@ -12,8 +12,11 @@
   const xTicks = xScale.ticks(5);
 </script>
 
-<g class="HorizontalAxis">
-  <g class="text" transform="translate({margin.left},{height})">
+<g
+  class="HorizontalAxis"
+  transform="translate({margin.left},{height})"
+>
+  <g class="text">
     {#each xTicks as year}
       <line
         x1={xScale(year)}

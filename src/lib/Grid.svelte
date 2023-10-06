@@ -1,4 +1,5 @@
 <script>
+  // @ts-nocheck
   import { onMount } from "svelte";
 
   // import modules
@@ -13,13 +14,21 @@
   export let updatedData;
 
   // create dimensions and peripherals variables
-  let svg;
-  let width = 400;
-  let height = 200;
+  let rect;
+  export let width;
+  export let height;
   let margin = { top: 25, right: 25, bottom: 25, left: 25 };
 
-  let innerHeight = Math.max(height - margin.top - margin.bottom, 0);
-  $: innerWidth = Math.max(width - margin.left - margin.right, 0);
+  $: innerHeight = height - margin.top - margin.bottom;
+  $: innerWidth = width - margin.left - margin.right;
+
+  $: dms = {
+    width,
+    height,
+    margin,
+    innerHeight,
+    innerWidth,
+  };
 
   let parseTime = timeParse("%b-%y");
 
@@ -36,42 +45,39 @@
 
   onMount(resize);
 
+  let w;
+  let h;
+
   function resize() {
-    ({ width, height } = svg.getBoundingClientRect());
+    let x = rect.getBoundingClientRect();
+    w = x.width;
+    h = x.height;
   }
+
+  $: console.log(w);
 </script>
 
 <svelte:window on:resize={resize} />
-<div class="chart-wrapper">
+
+<svg width={dms.width} height={dms.height}>
+  <rect />
   {#each sumstat as data, i}
-    <div class="chart">
-      <svg bind:this={svg}>
-        <g class="linechart">
-          <AxisX {xScale} height={innerHeight} {margin} />
-          <AxisY {yScale} width={innerWidth} {margin} />
-          <g>
-            <path
-              fill="none"
-              stroke="black"
-              stroke-width="2"
-              d={pathline(data[1])}
-            />
-          </g>
+    <g bind:this={rect} class="chart">
+      <g class="linechart">
+        <g>
+          <path
+            fill="none"
+            stroke="black"
+            stroke-width="2"
+            d={pathline(data[1])}
+          />
         </g>
-      </svg>
-    </div>
+      </g>
+    </g>
   {/each}
-</div>
+</svg>
 
 <style>
-  .chart-wrapper {
-    width: 100%;
-    max-width: 840px;
-    height: calc(100% - 4em);
-    min-height: 480px;
-    margin: 2rem auto;
-  }
-
   .chart {
     position: relative;
     width: 50%;

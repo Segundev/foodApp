@@ -3,12 +3,14 @@
 
   export let yScale;
   export let width;
+  export let height;
+
+  $: console.log(height);
 
   $: yTicks = yScale.ticks(4);
-  $: console.log(yTicks);
 </script>
 
-<g class="VerticalAxis">
+<g class="VerticalAxis" transform="translate({0},{0})">
   {#each yTicks as tick}
     <text class="text" x={40} y={yScale(tick)} dy="-5"> {tick}</text>
     <line

@@ -13,7 +13,7 @@
   import { curveCatmullRom, line } from "d3-shape"; /// to convert data into svg path
   import { timeParse } from "d3-time-format";
   import { scaleOrdinal } from "d3-scale";
-  import { schemePaired } from "d3-scale-chromatic";
+  import { schemeSet1 } from "d3-scale-chromatic";
 
   let parseTime = timeParse("%b-%y");
 
@@ -25,14 +25,14 @@
   // create margins, chart boundaries and dimensions
   // create margins, chart boundaries and dimensions
   export let width = 500;
-  export let height = 340;
+  export let height;
   let margin = {
     top: 40,
     bottom: 40,
     left: 75,
     right: 30,
   };
-  let innerHeight = height - margin.top - margin.right;
+  $: innerHeight = height - margin.top - margin.right;
   $: innerWidth = width - margin.left - margin.right;
 
   $: dms = {
@@ -48,9 +48,7 @@
   $: yScale = scaleY(updatedData, "prices", dms.innerHeight);
 
   // create an array of color scheme and color scales
-  let scaleColor = scaleOrdinal()
-    .domain(foodItems)
-    .range(schemePaired);
+  let scaleColor = scaleOrdinal().domain(foodItems).range(schemeSet1);
 
   // a reactive variable that has value of d3-path to draw the lines
   $: pathline = line()
@@ -60,7 +58,8 @@
 
   // declare a variable expected to contain data when we mouseover the chart
   let hovered;
-  $: console.log(height, "Height");
+  $: console.log(dms.innerHeight, "Height");
+  $: console.log(innerHeight, "Height--2");
 </script>
 
 <!-- CHART CONTAINER -->
@@ -90,7 +89,7 @@
       {width}
       margin={dms.margin}
     />
-    <AxisY {yScale} width={dms.width} />
+    <AxisY {yScale} width={dms.width} height={dms.innerHeight} />
   </g>
 
   <g class="line" transform="translate({margin.left}, {margin.top})">
