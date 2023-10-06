@@ -5,9 +5,10 @@
   export let width;
 
   $: yTicks = yScale.ticks(4);
+  $: console.log(yTicks);
 </script>
 
-<g>
+<g class="VerticalAxis">
   {#each yTicks as tick}
     <text class="text" x={40} y={yScale(tick)} dy="-5"> {tick}</text>
     <line
@@ -23,6 +24,6 @@
 
 <style>
   text {
-    font-size: 14px;
+    font-size: 12px;
   }
 </style>

@@ -60,15 +60,38 @@
 
   // declare a variable expected to contain data when we mouseover the chart
   let hovered;
-
-  $: console.log(dms.width);
+  $: console.log(height, "Height");
 </script>
 
 <!-- CHART CONTAINER -->
 
 <svg width={dms.width} height={dms.height}>
-  <AxisX {xScale} height={dms.height} {width} margin={dms.margin} />
-  <AxisY {yScale} width={dms.width} />
+  <defs>
+    <clipPath id="boundClip">
+      <rect
+        x={margin.left}
+        y={0}
+        width={innerWidth}
+        height={innerHeight}
+      />
+    </clipPath>
+  </defs>
+  <rect
+    x={40}
+    y={30}
+    width={innerWidth}
+    height={innerHeight}
+    fill="none"
+  />
+  <g class="DualAxisView">
+    <AxisX
+      {xScale}
+      height={dms.innerHeight}
+      {width}
+      margin={dms.margin}
+    />
+    <AxisY {yScale} width={dms.width} />
+  </g>
 
   <g class="line" transform="translate({margin.left}, {margin.top})">
     {#each sumstat as foodItem}

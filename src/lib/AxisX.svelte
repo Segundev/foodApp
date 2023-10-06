@@ -6,28 +6,31 @@
   export let height;
   export let width;
 
-  import { timeParse } from "d3-time-format";
-  let parseTime = timeParse("%b-%y");
+  import { timeFormat } from "d3-time-format";
+  let formatTime = timeFormat("%b-%y");
 
-  const xTicks = ["Jan-17", "Dec-18", "Jan-21", "Feb-23"];
-  $: console.log(xTicks);
+  const xTicks = xScale.ticks(5);
 </script>
 
-<line
-  x2={width}
-  y1={height - 30}
-  y2={height - 30}
-  stroke="#ddd"
-  stroke-width="1"
-/>
-<g class="text" transform="translate({margin.left},{height})">
-  {#each xTicks as year}
-    <text x={xScale(parseTime(year))} y={-5}> {year} </text>
-  {/each}
+<g class="HorizontalAxis">
+  <g class="text" transform="translate({margin.left},{height})">
+    {#each xTicks as year}
+      <line
+        x1={xScale(year)}
+        x2={xScale(year)}
+        y1={15}
+        y2={5}
+        stroke="#999"
+      />
+      <text x={xScale(year)} y={30} dx={-15}>
+        {formatTime(year)}
+      </text>
+    {/each}
+  </g>
 </g>
 
 <style>
   text {
-    font-size: 14px;
+    font-size: 12px;
   }
 </style>

@@ -50,7 +50,7 @@
 <div>
   <div class="header-wrapper">
     <header>
-      <h2>Title of the Dashboard</h2>
+      <!-- <h2>Title of the Dashboard</h2> -->
       <p>
         In recent years, multiple, consecutive crises, including the
         COVID-19 pandemic and Russia’s illegal war of aggression
@@ -238,7 +238,7 @@
     margin: 0 auto;
     padding-top: 1.2rem;
     width: 100%;
-    max-width: 1190px;
+    max-width: 690px;
     min-height: 340px;
     height: calc(100vh - 240px);
     position: relative;

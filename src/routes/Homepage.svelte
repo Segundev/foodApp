@@ -53,9 +53,12 @@
   <header>
     <h1>Food Prices Observer</h1>
     <p>
-      In recent years, multiple, consecutive crises, including the COVID-19
-      pandemic and Russia’s illegal war of aggression against Ukraine, have
-      threatened economic resilience and wellbeing worldwide.
+      Track the average prices of 38 food items nationally. Prices are
+      collected across all the 774 local government across all the
+      States and the FCT.
+    </p>
+    <p class="data-source">
+      Data Source: National Bureau of Statistics
     </p>
   </header>
   <!-- svelte-ignore a11y-no-static-element-interactions -->
@@ -68,7 +71,9 @@
   >
     <div>Next</div>
     <svg viewBox="0 0 24 24"
-      ><title>Next button</title><path d="M10,17L15,12L10,7V17Z" /></svg
+      ><title>Next button</title><path
+        d="M10,17L15,12L10,7V17Z"
+      /></svg
     >
   </div>
 </div>
@@ -100,27 +105,6 @@
     height: 4rem;
     fill: #ffffff;
   }
-
-  /*  .background-mask svg {
-    width: 4rem;
-    height: 4rem;
-    fill: #ffffff;
-    animation-name: spoonRotate;
-    animation-duration: 5ms;
-    animation-fill-mode: both;
-    animation-iteration-count: infinite;
-    animation-timing-function: cubic-bezier(0.5, 0, 0.5, 1);
-    transform-origin: 0px 0px 0px;
-  }
-
-  @keyframes spoonRotate {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  } */
 
   img {
     width: 4rem;
@@ -198,6 +182,12 @@
     height: 2rem;
     width: 2rem;
     fill: var(--lemon);
+  }
+
+  .data-source {
+    margin-top: 1rem;
+    font-size: 0.75rem;
+    color: var(--lemon);
   }
 
   @media (width < 600px) {
