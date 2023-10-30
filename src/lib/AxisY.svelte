@@ -5,17 +5,15 @@
   export let width;
   export let height;
 
-  $: console.log(height);
-
   $: yTicks = yScale.ticks(4);
 </script>
 
 <g class="VerticalAxis" transform="translate({0},{0})">
   {#each yTicks as tick}
-    <text class="text" x={40} y={yScale(tick)} dy="-5"> {tick}</text>
+    <text class="text" x={0} y={yScale(tick)} dy="-15"> {tick}</text>
     <line
-      x1={40}
-      x2={width - 20}
+      x1={0}
+      x2={width + 20}
       y1={yScale(tick)}
       y2={yScale(tick)}
       stroke="#ddd"

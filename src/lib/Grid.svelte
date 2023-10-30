@@ -14,7 +14,7 @@
   export let updatedData;
 
   // create dimensions and peripherals variables
-  let rect;
+  let svg;
   export let width;
   export let height;
   let margin = { top: 25, right: 25, bottom: 25, left: 25 };
@@ -49,40 +49,33 @@
   let h;
 
   function resize() {
-    let x = rect.getBoundingClientRect();
+    let x = svg.getBoundingClientRect();
     w = x.width;
     h = x.height;
   }
-
-  $: console.log(w);
 </script>
 
 <svelte:window on:resize={resize} />
 
-<svg width={dms.width} height={dms.height}>
-  <rect />
-  {#each sumstat as data, i}
-    <g bind:this={rect} class="chart">
-      <g class="linechart">
-        <g>
-          <path
-            fill="none"
-            stroke="black"
-            stroke-width="2"
-            d={pathline(data[1])}
-          />
-        </g>
+{#each sumstat as data, i}
+  <svg bind:this={svg}>
+    <g class="linechart">
+      <g class="line">
+        <path
+          fill="none"
+          stroke="black"
+          stroke-width="2"
+          d={pathline(data[1])}
+        />
       </g>
     </g>
-  {/each}
-</svg>
+  </svg>
+{/each}
 
 <style>
-  .chart {
-    position: relative;
+  svg {
     width: 50%;
     height: 50%;
     float: left;
-    padding: 2rem;
   }
 </style>

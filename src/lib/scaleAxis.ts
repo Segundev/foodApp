@@ -6,10 +6,10 @@ import { extent, max } from "d3-array"; // for data manipulation
 // set a variable that has a function value that converts string to Date
 let parseTime = timeParse("%b-%y");
 
-export function scaleX(data, x, width) {
+export function scaleX(data, x, width, minRange) {
   const scalex = scaleTime()
     .domain(extent(data, (d) => parseTime(d[x])))
-    .range([0, width]);
+    .range([minRange, width]);
   return scalex;
 }
 

@@ -1,15 +1,21 @@
 <script>
+  // @ts-nocheck
+
   export let data;
   export let xScale;
   export let yScale;
   export let innerHeight;
   import { timeParse } from "d3-time-format";
-  let parseTime = timeParse("%y-%b");
+  let parseTime = timeParse("%b-%y");
+
+  //  $: console.log(data);
 </script>
 
 <g
   fill="red"
-  transform="translate({xScale(parseTime(data.date))} {yScale(data.prices)})"
+  transform="translate({xScale(parseTime(data.date))} {yScale(
+    data.prices
+  )})"
 >
   <text
     text-anchor="middle"
@@ -24,7 +30,7 @@
     stroke="hsl(0, 0%, 10%)"
     stroke-width="0.5"
     stroke-dasharray="1"
-    d="M 0 0 v {innerHeight - yScale(data.wheatFlour)}"
+    d="M 0 0 v {innerHeight - yScale(data.prices)}"
   />
   <circle r="2" fill="red" />
 </g>

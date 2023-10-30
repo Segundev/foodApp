@@ -9,7 +9,7 @@
   import { groups } from "d3-array"; // for data manipulation
 
   // @ts-ignore - List of selected food items
-  let selected = ["icedSardine"];
+  let selected = ["riceLocal"];
   const foodItems = [...new Set(data.map((d) => d.foodItem))];
 
   // @ts-ignore - Data is updated and selected based on fooditems selected from list of checkbox items
@@ -236,7 +236,7 @@
     margin: 0 auto;
     padding-top: 1.2rem;
     width: 100%;
-    max-width: 690px;
+    max-width: 850px;
     min-height: 340px;
     height: calc(100vh - 240px);
     position: relative;
