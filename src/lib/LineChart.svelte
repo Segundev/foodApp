@@ -8,6 +8,8 @@
   import AxisX from "./AxisX.svelte";
   import AxisY from "./AxisY.svelte";
   import AltTooltip from "./AltTooltip.svelte";
+  import Mini from "../lib/Mini.svelte";
+  import { minx, maxx } from "./settings.js";
 
   // import d3 dependencies
   import { curveCatmullRom, line } from "d3-shape"; /// to convert data into svg path
@@ -48,6 +50,18 @@
 
   const xAccessor = (d) => d.date;
   const yAccessor = (d) => d.prices;
+
+  let minX, maxX;
+  $: minX = xAccessor(updatedData[0]);
+  $: maxX = xAccessor(updatedData[updatedData.length - 1]);
+
+  minx.subscribe((value) => {
+    minX = value;
+  });
+
+  maxx.subscribe((value) => {
+    maxX = value;
+  });
 
   // reactive scale on the horizontal and vertical axis, Mapping date and prices variables to create scaled axis within chart boundaries
   $: xScale = scaleTime()
@@ -180,6 +194,9 @@
     />
   </g>
 </svg>
+<footer>
+  <Mini {margin} {innerWidth} {minX} {maxX} />
+</footer>
 {#if hoveredEvent}
   <AltTooltip
     {positionOnChart}

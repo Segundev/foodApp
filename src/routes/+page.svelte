@@ -16,7 +16,7 @@
 
 <style>
   .main-container {
-    height: 100vh;
+    height: 100svh;
     overflow: hidden;
   }
 </style>

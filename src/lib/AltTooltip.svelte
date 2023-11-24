@@ -62,8 +62,6 @@
       tweenedTransition
     );
   }
-
-  $: console.log($nearestDataX, $nearestDataY);
 </script>
 
 <!-- Tooltip Group -->
